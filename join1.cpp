@@ -157,6 +157,12 @@ int main(int argc, const char* argv[]) {
         fh_unsorted1.FlushPages();
         pagenum++;
     }
+    int end=-1;
+    while(j<PAGE_CONTENT_SIZE/4){
+      
+	  memcpy (&odata[j*4], &end, sizeof(int));
+	  j++;
+	}
     print(&outputfh,&fm);
     fm.CloseFile(fh_unsorted1);
     fm.CloseFile(fh_unsorted2);
