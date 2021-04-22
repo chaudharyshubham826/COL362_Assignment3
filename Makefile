@@ -35,3 +35,6 @@ file_manager.o : file_manager.cpp
 clean :
 	rm -f *.o
 	rm -f sample_run
+	rm -f linear_search
+	rm -f join1
+	rm -f join2
