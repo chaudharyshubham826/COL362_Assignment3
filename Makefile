@@ -14,11 +14,11 @@ join1: $(join1objects)
 	g++ -std=c++11 -o join1 $(join1objects)
 
 binary_search : $(binaryobjects)
-	g++ -std=c++11 -o binary_search $(binaryobjects)
+	g++ -std=c++11 -o binarysearch $(binaryobjects)
 
 deletion : $(deleteobjects)
 	g++ -std=c++11 -o deletion $(deleteobjects)
-	
+
 join2: $(join2objects)
 	g++ -std=c++11 -o join2 $(join2objects)
 
