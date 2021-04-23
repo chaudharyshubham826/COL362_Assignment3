@@ -256,7 +256,7 @@ int main(int argc, const char *argv[])
             
             int var = 0;
 
-            while (q <= 6){
+            while (q <= last_page_no){
                 var++;
                 cout<<"iter "<<var<<endl;
                 cout<<page<<q<<endl;
