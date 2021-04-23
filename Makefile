@@ -3,6 +3,7 @@ linearobjects= buffer_manager.o file_manager.o linear_search.o
 join1objects= buffer_manager.o file_manager.o join1.o
 binaryobjects= buffer_manager.o file_manager.o binary_search.o
 deleteobjects= buffer_manager.o file_manager.o deletion.o
+join2objects= buffer_manager.o file_manager.o join2.o
 sample_run : $(sampleobjects)
 	     g++ -std=c++11 -o sample_run $(sampleobjects)
 
@@ -17,6 +18,8 @@ binary_search : $(binaryobjects)
 
 deletion : $(deleteobjects)
 	g++ -std=c++11 -o deletion $(deleteobjects)
+join2: $(join2objects)
+	g++ -std=c++11 -o join2 $(join2objects)
 
 linear_search.o : linear_search.cpp
 	g++ -std=c++11 -c linear_search.cpp
@@ -30,6 +33,9 @@ deletion.o : deletion.cpp
 join1.o : join1.cpp
 	g++ -std=c++11 -c join1.cpp
 
+join2.o : join2.cpp
+	g++ -std=c++11 -c join2.cpp
+
 sample_run.o : sample_run.cpp
 	g++ -std=c++11 -c sample_run.cpp
 
@@ -42,3 +48,9 @@ file_manager.o : file_manager.cpp
 clean :
 	rm -f *.o
 	rm -f *.exe
+	rm -f deletion
+	rm -f binary_search
+	rm -f sample_run
+	rm -f linear_search
+	rm -f join1
+	rm -f join2

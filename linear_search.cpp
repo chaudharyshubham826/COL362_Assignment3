@@ -115,49 +115,66 @@ int main(int argc, const char* argv[]) {
 					break;
 				}
 				if(search==num){
+					if(j==PAGE_CONTENT_SIZE/8){
+                        j=0;
+                        outputfh.FlushPage(opagenum);
+					    outputfh.UnpinPage(opagenum);
+					    outputfh.FlushPages();
+					    ph2 = outputfh.NewPage ();
+					    odata = ph2.GetData ();
+                        //opagenum+=1;
+                    }
+					//this can be done since offset and pagenum will always be in same page. (given, PAGE_CONTENT_SIZE=even multiple of 4)
+					pair<int,int> p=make_pair(pagenum,i);
+                    memcpy(&odata[j*8], &p,sizeof(pair<int,int>));
+                    j+=1;
+
 				//cout<<"j is : "<<j<<" ";
-				if(j<PAGE_CONTENT_SIZE/4){
-				memcpy (&odata[j*4], &pagenum, sizeof(int));
-				//cout<<j;
-				}
-				else{
-                  outputfh.FlushPage(opagenum);
-				  outputfh.UnpinPage(opagenum);
-				   outputfh.FlushPages();
-				  //fm.ClearBuffer();
-				  opagenum++;
-				  //cout<<"I am here"<<endl;
-				  ph2 = outputfh.NewPage ();
-		          odata = ph2.GetData ();
-				  j=-1;
-				}
-				j++;
-				if(j<PAGE_CONTENT_SIZE/4){
-				//cout<<j<<endl;
-				memcpy (&odata[(j)*4], &i, sizeof(int));
-				}
-				else{
-                  outputfh.FlushPage(opagenum);
-				  outputfh.UnpinPage(opagenum);
-				  outputfh.FlushPages();
-				  //fm.ClearBuffer();
-				  opagenum++;
-				  ph2 = outputfh.NewPage ();
-		          odata = ph2.GetData ();
-				  j=-1;
-				}
-				j++;
-				if(j==PAGE_CONTENT_SIZE/4){
-					j=0;
-					outputfh.FlushPage(opagenum);
-					outputfh.UnpinPage(opagenum);
-					outputfh.FlushPages();
-					//fm.ClearBuffer();
-					opagenum++;
-					ph2 = outputfh.NewPage ();
-					odata = ph2.GetData ();
-				}
-				cout<<"Pagenum is "<<pagenum<< " Number is "<<num<<" .Offset is "<<i<<endl;
+				// if(j<PAGE_CONTENT_SIZE/4){
+				// memcpy (&odata[j*4], &pagenum, sizeof(int));
+				// //cout<<j;
+				// }
+				// else{
+                //   outputfh.FlushPage(opagenum);
+				//   outputfh.UnpinPage(opagenum);
+				//    outputfh.FlushPages();
+				//   //fm.ClearBuffer();
+				//   opagenum++;
+				//   //cout<<"I am here"<<endl;
+				//   ph2 = outputfh.NewPage ();
+		        //   odata = ph2.GetData ();
+				//   j=-1;
+				// }
+				// j++;
+				// if(j<PAGE_CONTENT_SIZE/4){
+				// //cout<<j<<endl;
+				// memcpy (&odata[(j)*4], &i, sizeof(int));
+				// }
+				// else{
+                //   outputfh.FlushPage(opagenum);
+				//   outputfh.UnpinPage(opagenum);
+				//   outputfh.FlushPages();
+				//   //fm.ClearBuffer();
+				//   opagenum++;
+				//   ph2 = outputfh.NewPage ();
+		        //   odata = ph2.GetData ();
+				//   j=-1;
+				// }
+				// j++;
+				// if(j==PAGE_CONTENT_SIZE/4){
+				// 	j=0;
+				// 	outputfh.FlushPage(opagenum);
+				// 	outputfh.UnpinPage(opagenum);
+				// 	outputfh.FlushPages();
+				// 	//fm.ClearBuffer();
+				// 	opagenum++;
+				// 	ph2 = outputfh.NewPage ();
+				// 	odata = ph2.GetData ();
+				// }
+				// cout<<"Pagenum is "<<pagenum<< " Number is "<<num<<" .Offset is "<<i<<endl;
+
+
+
 				}
 			}
 
@@ -170,55 +187,68 @@ int main(int argc, const char* argv[]) {
 
 
 	cout<<"Iteration "<<i<<"PagenumOutput: "<<opagenum<<"j is : "<<j<<endl;
-	int end=-1;
-    if(j<PAGE_CONTENT_SIZE/4){
-				memcpy (&odata[j*4], &end, sizeof(int));
-				//cout<<j;
-				}
-				else{
-                  outputfh.FlushPage(opagenum);
-				  outputfh.UnpinPage(opagenum);
-				  outputfh.FlushPages();
-				  fm.ClearBuffer();
-				  //cout<<"I am here"<<endl;
-				  opagenum++;
-				  ph2 = outputfh.NewPage ();
-		          odata = ph2.GetData ();
-				  j=-1;
-				}
-				j++;
-				if(j<PAGE_CONTENT_SIZE/4){
-				//cout<<j<<endl;
-				memcpy (&odata[(j)*4], &end, sizeof(int));
-				}
-				else{
-                  outputfh.FlushPage(opagenum);
-				  outputfh.UnpinPage(opagenum);
-				  outputfh.FlushPages();
-				  fm.ClearBuffer();
-				  //cout<<"I am here"<<endl;
-				  opagenum++;
-				  ph2 = outputfh.NewPage ();
-		          odata = ph2.GetData ();
-				  j=-1;
-				}
-				j++;
-				if(j==PAGE_CONTENT_SIZE/4){
-					j=0;
-					outputfh.FlushPage(opagenum);
-					outputfh.UnpinPage(opagenum);
-					outputfh.FlushPages();
-					fm.ClearBuffer();
-					//cout<<"I am here"<<endl;
-					//opagenum++;
-					ph2 = outputfh.NewPage ();
-					odata = ph2.GetData ();
-				}
+	if(j==PAGE_CONTENT_SIZE/8){
+                        j=0;
+                        outputfh.FlushPage(opagenum);
+					    outputfh.UnpinPage(opagenum);
+					    outputfh.FlushPages();
+					    ph2 = outputfh.NewPage ();
+					    odata = ph2.GetData ();
+                        //opagenum+=1;
+                    }
+					pair<int,int> p=make_pair(-1,-1);
+                    memcpy(&odata[j*8], &p,sizeof(pair<int,int>));
+                    j+=1;
+	// int end=-1;
+    // if(j<PAGE_CONTENT_SIZE/4){
+	// 			memcpy (&odata[j*4], &end, sizeof(int));
+	// 			//cout<<j;
+	// }
+	// else{
+    //               outputfh.FlushPage(opagenum);
+	// 			  outputfh.UnpinPage(opagenum);
+	// 			  outputfh.FlushPages();
+	// 			  fm.ClearBuffer();
+	// 			  //cout<<"I am here"<<endl;
+	// 			  opagenum++;
+	// 			  ph2 = outputfh.NewPage ();
+	// 	          odata = ph2.GetData ();
+	// 			  j=-1;
+	// }
+	// j++;
+	// if(j<PAGE_CONTENT_SIZE/4){
+	// 			//cout<<j<<endl;
+	// 			memcpy (&odata[(j)*4], &end, sizeof(int));
+	// }
+	// else{
+    //               outputfh.FlushPage(opagenum);
+	// 			  outputfh.UnpinPage(opagenum);
+	// 			  outputfh.FlushPages();
+	// 			  fm.ClearBuffer();
+	// 			  //cout<<"I am here"<<endl;
+	// 			  opagenum++;
+	// 			  ph2 = outputfh.NewPage ();
+	// 	          odata = ph2.GetData ();
+	// 			  j=-1;
+	// }
+	// j++;
+	// if(j==PAGE_CONTENT_SIZE/4){
+	// 				j=0;
+	// 				outputfh.FlushPage(opagenum);
+	// 				outputfh.UnpinPage(opagenum);
+	// 				outputfh.FlushPages();
+	// 				fm.ClearBuffer();
+	// 				//cout<<"I am here"<<endl;
+	// 				//opagenum++;
+	// 				ph2 = outputfh.NewPage ();
+	// 				odata = ph2.GetData ();
+	// }
 
 	}
     //cout<<"lastpage "<<outputfh.LastPage().GetPageNum()<<endl;
     
 	int end=INT_MIN;
+	j=2*j;
 	while(j<PAGE_CONTENT_SIZE/4){
       
 	  memcpy (&odata[j*4], &end, sizeof(int));
