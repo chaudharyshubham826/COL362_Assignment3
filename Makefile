@@ -18,6 +18,7 @@ binary_search : $(binaryobjects)
 
 deletion : $(deleteobjects)
 	g++ -std=c++11 -o deletion $(deleteobjects)
+	
 join2: $(join2objects)
 	g++ -std=c++11 -o join2 $(join2objects)
 
