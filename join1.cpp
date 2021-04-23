@@ -157,7 +157,7 @@ int main(int argc, const char* argv[]) {
         fh_unsorted1.FlushPages();
         pagenum++;
     }
-    int end=-1;
+    int end=INT_MIN;
     while(j<PAGE_CONTENT_SIZE/4){
       
 	  memcpy (&odata[j*4], &end, sizeof(int));
