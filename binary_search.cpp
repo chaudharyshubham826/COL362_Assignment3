@@ -100,6 +100,9 @@ int main(int argc, const char *argv[])
             cout << "page_no: " << i << ", offset: " << j << ", data: " << num<< endl;
             
         }
+
+        fh.UnpinPage(i);
+        fh.FlushPages();
     }
 
     ///////////////////////////////////
