@@ -224,53 +224,38 @@ int main(int argc, const char *argv[])
 
         if(found == true){
 
-            if(q != page){
-            
-                try {ph = fh.PageAt(q);
-                }
-                catch (const InvalidPageException &e){
-                    cout << "Invalid error, check your code!" << endl;
-                    exit(1);
-                }
-                data = ph.GetData();
-
-            }
-
-            // fh.UnpinPage(q);
-            // fh.FlushPages();
-    
-            try
-            {
-                ph2 = fh.PageAt(page);
-                fh.MarkDirty(page);
-            }
-            catch (const InvalidPageException &e)
-            {
-                cout << "Invalid error, check your code! 2" << endl;
-                exit(1);
-            }
-
-            data2 = ph2.GetData();
-            
-
             
             int var = 0;
+
+            int temp;
 
             while (q <= last_page_no){
                 var++;
                 cout<<"iter "<<var<<endl;
                 cout<<page<<q<<endl;
+                fm.PrintBuffer();
 
-                if(q == page){
                 
-                    memcpy(&data2[page_off * 4], &data2[q_off * 4], sizeof(int));
-                    
-                    
-                }
-                else{
-                    memcpy(&data2[page_off * 4], &data[q_off * 4], sizeof(int));
-                }
+                
+                // memcpy(&data2[page_off * 4], &data2[q_off * 4], sizeof(int));
+
+                ph = fh.PageAt(q);
+                data = ph.GetData();
+                temp = data[q_off*4];
+                fh.UnpinPage(q);
+
+                ph = fh.PageAt(page);
+                fh.MarkDirty(page);
+                data = ph.GetData();
+                
+
+                memcpy(&data[page_off * 4], &temp, sizeof(int));
+
+                fh.UnpinPage(page);
+                // fh.FlushPage(page);
+
                 cout<<"DONE"<<endl;
+                
 
                 
                 
@@ -278,42 +263,7 @@ int main(int argc, const char *argv[])
 
                 if (page_off == PAGE_CONTENT_SIZE / 4 - 1){
                     //go to next page
-                    fh.UnpinPage(page);
-                    fh.FlushPage(page);
-
-                    
                     page++;
-
-                    if(page != q){
-
-                    
-                        try{
-                            ph2 = fh.PageAt(page);
-                            fh.MarkDirty(page);
-                        }
-                        catch (const InvalidPageException &e){
-                            cout << "Invalid error, check your code! 3" << endl;
-                            exit(1);
-                        }
-                        data2 = ph2.GetData();
-                    }
-
-                    else{
-                        fh.UnpinPage(q);
-                        fh.FlushPages();
-
-                        try{
-                            ph2 = fh.PageAt(page);
-                            fh.MarkDirty(page);
-                        }
-                        catch (const InvalidPageException &e){
-                            cout << "Invalid error, check your code! 3" << endl;
-                            exit(1);
-                        }
-                        data2 = ph2.GetData();
-                    }
-                    
-
                     page_off = 0;
                 }
 
@@ -325,43 +275,6 @@ int main(int argc, const char *argv[])
                 if (q_off == PAGE_CONTENT_SIZE / 4 - 1)
                 {
                     //go to next page
-                    fh.UnpinPage(q);
-                    fh.FlushPages();
-
-                    if(q != page){
-                        cout << "q= " << q + 1 << endl;
-                        try
-                        {
-                            ph = fh.PageAt(q + 1);
-                        }
-                        catch (const InvalidPageException &e)
-                        {
-                            cout << "Shifting done, q finished!" << endl;
-                            break;
-                        }
-
-                        data = ph.GetData();
-                        
-                    }
-
-                    else{
-                        ph2 = fh.PageAt(page);
-                        fh.MarkDirty(page);
-                        data2 = ph2.GetData();
-
-                        try
-                        {
-                            ph = fh.PageAt(q + 1);
-                        }
-                        catch (const InvalidPageException &e)
-                        {
-                            cout << "Shifting done, q finished!" << endl;
-                            break;
-                        }
-
-                        data = ph.GetData();
-                    }
-
                     q++;
                     q_off = 0;
                 }
@@ -380,27 +293,34 @@ int main(int argc, const char *argv[])
 
             // Fill with int min's
             int end = INT_MIN;
+            ph = fh.PageAt(page);
+            fh.MarkDirty(page);
+            data = ph.GetData();
             while (page_off < PAGE_CONTENT_SIZE / 4){
+                
 
-                memcpy(&data2[page_off * 4], &end, sizeof(int));
+                memcpy(&data[page_off * 4], &end, sizeof(int));
                 page_off++;
             }
 
             fh.UnpinPage(page);
             fh.FlushPage(page);
-            fh.UnpinPage(q);
-            fh.FlushPage(q);
+            // fh.UnpinPage(q);
+            // fh.FlushPage(q);
 
             //Delete last empty pages
             page++;
             while(page <= last_page_no){
                 fh.DisposePage(page);
-                fh.FlushPage(page);
+                // fh.FlushPage(page);
+                
                 page++;
             }
             fh.FlushPages();
             }
     }
+
+    fm.CloseFile(fh);
 
     return 0;
 }
