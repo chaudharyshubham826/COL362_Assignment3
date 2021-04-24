@@ -1,4 +1,3 @@
-//Sample file for students to get their code running
 
 #include <iostream>
 #include <cstring>
@@ -43,7 +42,7 @@ void print(FileHandler* fh, FileManager* fm){
         fh->UnpinPage(pagenum-1);
     }
 
-	//Flush the pages, close the file and destroy it
+	
 	fh->FlushPages();
 
 }
@@ -54,14 +53,15 @@ int main(int argc, const char* argv[]) {
 	inputFile.open(argv[2]);
 	if(!inputFile.is_open()){
 	   //	cout<<"File doesn't exist";
+	   return 0;
 	}
-	//cout << "Input file for integers taken" << endl;
+	
 
 	//opening sorted_input
 	FileManager fm;
 	FileHandler fh = fm.OpenFile(argv[1]);
-	//cout << "File opened" << endl;
-	//cout<<BUFFER_SIZE<<" "<<PAGE_CONTENT_SIZE<<endl;
+	
+
 	int  num;
 	string str;
 	vector<int> numbers;
@@ -70,14 +70,11 @@ int main(int argc, const char* argv[]) {
 		//cout << "Read number " << num << endl;
 		numbers.push_back(num);
 	}
-	//sort(numbers.begin(), numbers.end());
+
 
 
     int lastFoundPage = fh.FirstPage().GetPageNum();
-    //fh.UnpinPage(lastFoundPage);
-	//cout << "First page number is " << lastFoundPage << endl;
     
-	//cout<<"hello";
 	FileHandler outputfh;
 	outputfh=fm.CreateFile(argv[3]);
     PageHandler ph2 = outputfh.NewPage ();
@@ -85,7 +82,7 @@ int main(int argc, const char* argv[]) {
 	int j=0;
 	int opagenum=0;
 
-	//cout<<"Hrllo";
+	
 	for (int i = 0; i < numbers.size(); i++) {
         int search=numbers.at(i);
 		num=0;
@@ -95,7 +92,7 @@ int main(int argc, const char* argv[]) {
 
 		while(true){
         try
-        {   //cout<<"I am here";
+        {   
             ph = fh.PageAt(pagenum);
 			//fh.UnpinPage(pagenum);
         }
@@ -199,50 +196,7 @@ int main(int argc, const char* argv[]) {
 					pair<int,int> p=make_pair(-1,-1);
                     memcpy(&odata[j*8], &p,sizeof(pair<int,int>));
                     j+=1;
-	// int end=-1;
-    // if(j<PAGE_CONTENT_SIZE/4){
-	// 			memcpy (&odata[j*4], &end, sizeof(int));
-	// 			//cout<<j;
-	// }
-	// else{
-    //               outputfh.FlushPage(opagenum);
-	// 			  outputfh.UnpinPage(opagenum);
-	// 			  outputfh.FlushPages();
-	// 			  fm.ClearBuffer();
-	// 			  //cout<<"I am here"<<endl;
-	// 			  opagenum++;
-	// 			  ph2 = outputfh.NewPage ();
-	// 	          odata = ph2.GetData ();
-	// 			  j=-1;
-	// }
-	// j++;
-	// if(j<PAGE_CONTENT_SIZE/4){
-	// 			//cout<<j<<endl;
-	// 			memcpy (&odata[(j)*4], &end, sizeof(int));
-	// }
-	// else{
-    //               outputfh.FlushPage(opagenum);
-	// 			  outputfh.UnpinPage(opagenum);
-	// 			  outputfh.FlushPages();
-	// 			  fm.ClearBuffer();
-	// 			  //cout<<"I am here"<<endl;
-	// 			  opagenum++;
-	// 			  ph2 = outputfh.NewPage ();
-	// 	          odata = ph2.GetData ();
-	// 			  j=-1;
-	// }
-	// j++;
-	// if(j==PAGE_CONTENT_SIZE/4){
-	// 				j=0;
-	// 				outputfh.FlushPage(opagenum);
-	// 				outputfh.UnpinPage(opagenum);
-	// 				outputfh.FlushPages();
-	// 				fm.ClearBuffer();
-	// 				//cout<<"I am here"<<endl;
-	// 				//opagenum++;
-	// 				ph2 = outputfh.NewPage ();
-	// 				odata = ph2.GetData ();
-	// }
+
 
 	}
     //cout<<"lastpage "<<outputfh.LastPage().GetPageNum()<<endl;
@@ -255,7 +209,7 @@ int main(int argc, const char* argv[]) {
 	  j++;
 	}
 
-
+    //print(&outputfh, &fm);
 	fm.CloseFile (fh);
 	fm.CloseFile(outputfh);
 	
