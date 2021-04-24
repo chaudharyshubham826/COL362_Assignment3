@@ -41,7 +41,6 @@ void print(FileHandler* fh, FileManager* fm){
         fh->UnpinPage(pagenum-1);
     }
 
-	//Flush the pages, close the file and destroy it
 	fh->FlushPages();
 
 }
@@ -54,19 +53,8 @@ int main(int argc, const char* argv[]) {
 	FileHandler fh_unsorted = fm.OpenFile(argv[1]);
     PageHandler ph;
     FileHandler fh_sorted = fm.OpenFile(argv[2]);
-    //FileHandler check = fm.OpenFile("./TestCases/TC_join2/output_join2");
-    //print(&check,&fm);
-	//cout << "File opened" << endl;
-	//cout<<BUFFER_SIZE<<" "<<PAGE_CONTENT_SIZE<<endl;
-	
-
-	
-	//sort(numbers.begin(), numbers.end());
-
-    //fh.UnpinPage(lastFoundPage);
-	/*cout << "First page number is " << lastFoundPage << endl;
     
-	cout<<"hello";*/
+    
 	FileHandler outputfh;
 	outputfh=fm.CreateFile(argv[3]);
     PageHandler ph3 = outputfh.NewPage ();
@@ -188,6 +176,36 @@ int main(int argc, const char* argv[]) {
         pagenum++;
         
     }
+    int end=INT_MIN;
+    while(j<PAGE_CONTENT_SIZE/4){
+      
+	  memcpy (&odata[j*4], &end, sizeof(int));
+	  j++;
+	}
+    int last_page_no = outputfh.LastPage().GetPageNum();
+    outputfh.UnpinPage(last_page_no);
+    outputfh.FlushPages();
+
+            if(last_page_no == 0){
+                int first;
+                ph = outputfh.PageAt(0);
+                data = ph.GetData();
+                memcpy(&first, &data[0], sizeof(int));
+
+                if(first == INT_MIN){
+                    outputfh.DisposePage(0);
+                }
+                else{
+                    outputfh.UnpinPage(0);
+                }
+
+                outputfh.FlushPages();
+
+    }
+    //print(&outputfh,&fm);
+    fm.CloseFile(fh_sorted);
+    fm.CloseFile(fh_unsorted);
+    fm.CloseFile(outputfh);
     //print(&outputfh,&fm);
     //fm.DestroyFile(argv[3]);
 }
