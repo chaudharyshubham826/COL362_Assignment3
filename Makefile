@@ -6,6 +6,8 @@ binaryobjects= $(compiled) binary_search.o
 deleteobjects= $(compiled) deletion.o
 join2objects= $(compiled) join2.o
 
+# printobj = $(compiled) print.o
+
 sample_run : $(sampleobjects)
 	     g++ -std=c++11 -o sample_run $(sampleobjects)
 
@@ -47,6 +49,12 @@ buffer_manager.o : buffer_manager.cpp
 
 file_manager.o : file_manager.cpp
 	g++ -std=c++11 -c file_manager.cpp
+
+# print.o: print.cpp
+# 	g++ -std=c++11 -c print.cpp
+
+# print : $(printobj)
+# 	g++ -std=c++11 -o print $(printobj)
 
 clean :
 	rm -f *.o

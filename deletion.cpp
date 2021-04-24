@@ -42,8 +42,8 @@ int main(int argc, const char *argv[])
     PageHandler ph;
     // int pagenum = 0;
     char *data;
-    PageHandler ph2;
-    char *data2;
+    // PageHandler ph2;
+    // char *data2;
 
     //////////// Uncomment of you want to print file contents ////////////////////
     // for (int i = first_page_no; i <= last_page_no; i++)
@@ -62,6 +62,8 @@ int main(int argc, const char *argv[])
     //     fh.UnpinPage(i);
     //     fh.FlushPages();
     // }
+    //////////////////////////////////////////////////////////////////////////////////
+    // fm.PrintBuffer();
 
     /////// global vars
     int to_search;
@@ -75,9 +77,17 @@ int main(int argc, const char *argv[])
     int page = 0;
     int page_off = 0;
 
+
+
     //////////// STEP 1: FINDING USING BINARY SEARCH /////////////////////
     for(int test = 0; test < numbers.size(); test++){
         to_search = numbers.at(test);
+        first_page_no = fh.FirstPage().GetPageNum();
+        last_page_no = fh.LastPage().GetPageNum();
+        // fm.PrintBuffer();
+        fh.UnpinPage(first_page_no);
+        fh.UnpinPage(last_page_no);
+        fh.FlushPages();
 
         // cout << "Searching for first occurence of: " << to_search << endl;
 
@@ -176,7 +186,8 @@ int main(int argc, const char *argv[])
                 }
             }
         }
-        cout<<"Binary_searchDone"<<endl;
+        // cout<<"Buffer after step 1"<<endl;
+        // fm.PrintBuffer();
 
 
         ////////////////// STEP 2: FINDING LAST OCCURENCE USING LINEAR SEARCH AND STEP 3//////////////////////
@@ -220,6 +231,7 @@ int main(int argc, const char *argv[])
         }
 
         ///////////// STEP 3: PDF ALGO ///////////////////
+        // cout<<"Buffer after step 2"<<endl;
         // fm.PrintBuffer();
 
 
@@ -329,8 +341,36 @@ int main(int argc, const char *argv[])
             }
             fh.FlushPages();
             }
+            //////////// Uncomment of you want to print file contents after each delete////////////////////
+
+            // first_page_no = fh.FirstPage().GetPageNum();
+            // last_page_no = fh.LastPage().GetPageNum();
+            // fm.PrintBuffer();
+            // fh.UnpinPage(first_page_no);
+            // fh.UnpinPage(last_page_no);
+            // fh.FlushPages();
+
+            //    for (int i = first_page_no; i <= last_page_no; i++)
+            //     {
+            //         ph = fh.PageAt(i);
+            //         data = ph.GetData();
+
+            //         for (int j = 0; j < PAGE_CONTENT_SIZE / 4; j++)
+            //         {
+            //             memcpy(&num, &data[j * 4], sizeof(int));
+            //             // cout << "Page: " << pagenum << ", Data: " << num << endl;
+
+            //             cout << "page_no: " << i << ", offset: " << j << ", data: " << num << endl;
+            //         }
+
+            //         fh.UnpinPage(i);
+            //         fh.FlushPages();
+            //     }
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
+    
+    // cout<<"here"<<endl;
     fm.CloseFile(fh);
 
     return 0;
