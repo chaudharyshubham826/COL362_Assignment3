@@ -7,43 +7,43 @@
 #include "errors.h"
 using namespace std;
 
-// void print(FileHandler *fh, FileManager *fm)
-// {
-//     PageHandler ph;
-//     char *data;
-//     int pagenum = 0;
-//     int num;
+void print(FileHandler *fh, FileManager *fm)
+{
+    PageHandler ph;
+    char *data;
+    int pagenum = 0;
+    int num;
 
-//     while (true)
-//     {
-//         try
-//         {
-//             ph = fh->PageAt(pagenum);
-//         }
-//         catch (const InvalidPageException &e)
-//         {
-//             cout << "file over" << endl;
-//             break;
-//         }
-//         data = ph.GetData();
-//         for (int i = 0; i < PAGE_CONTENT_SIZE / 4; i++)
-//         {
-//             memcpy(&num, &data[i * 4], sizeof(int));
-//             // if(num==INT_MIN){
-//             // 	break;
-//             // }
-//             cout << "Pagenum is " << pagenum << " Found at page " << num << " .Offset is " << i << endl;
-//         }
+    while (true)
+    {
+        try
+        {
+            ph = fh->PageAt(pagenum);
+        }
+        catch (const InvalidPageException &e)
+        {
+            cout << "file over" << endl;
+            break;
+        }
+        data = ph.GetData();
+        for (int i = 0; i < PAGE_CONTENT_SIZE / 4; i++)
+        {
+            memcpy(&num, &data[i * 4], sizeof(int));
+            // if(num==INT_MIN){
+            // 	break;
+            // }
+            cout << "Pagenum is " << pagenum << " Found at page " << num << " .Offset is " << i << endl;
+        }
 
-//         cout << endl;
-//         pagenum += 1;
-//         fh->FlushPage(pagenum - 1);
-//         fh->UnpinPage(pagenum - 1);
-//     }
+        cout << endl;
+        pagenum += 1;
+        fh->FlushPage(pagenum - 1);
+        fh->UnpinPage(pagenum - 1);
+    }
 
-//     //Flush the pages, close the file and destroy it
-//     fh->FlushPages();
-// }
+    //Flush the pages, close the file and destroy it
+    fh->FlushPages();
+}
 
 int main(int argc, const char *argv[])
 {
@@ -52,9 +52,9 @@ int main(int argc, const char *argv[])
     inputFile.open(argv[2]);
     if (!inputFile.is_open())
     {
-        cout << "File doesn't exist";
+        //cout << "File doesn't exist";
     }
-    cout << "Input file for integers taken" << endl;
+    
 
     int num;
     string str;
@@ -62,7 +62,7 @@ int main(int argc, const char *argv[])
 
     while (inputFile >> str >> num)
     {
-        cout << "Read number " << num << " from the input query_search.txt file" << endl;
+        //cout << "Read number " << num << " from the input query_search.txt file" << endl;
         numbers.push_back(num);
     }
     //////////////////////////////////All numbers to search in vector numbers now////////////////////////////
@@ -70,8 +70,8 @@ int main(int argc, const char *argv[])
     //opening sorted_input
     FileManager fm;
     FileHandler fh = fm.OpenFile(argv[1]);
-    cout << "File opened having data, sorted_input" << endl;
-    cout << BUFFER_SIZE << " " << PAGE_CONTENT_SIZE << endl;
+    //cout << "File opened having data, sorted_input" << endl;
+    //cout << BUFFER_SIZE << " " << PAGE_CONTENT_SIZE << endl;
     
 
 
@@ -79,8 +79,8 @@ int main(int argc, const char *argv[])
     int first_page_no = fh.FirstPage().GetPageNum();
     int last_page_no = fh.LastPage().GetPageNum();
     //fh.UnpinPage(lastFoundPage);
-    cout << "First page number is " << first_page_no << endl;
-    cout << "Last page number is " << last_page_no << endl;
+    //cout << "First page number is " << first_page_no << endl;
+    //cout << "Last page number is " << last_page_no << endl;
 
     PageHandler ph;
     int pagenum = 0;
@@ -97,7 +97,7 @@ int main(int argc, const char *argv[])
             // cout << "Page: " << pagenum << ", Data: " << num << endl;
 
             
-            cout << "page_no: " << i << ", offset: " << j << ", data: " << num<< endl;
+           // cout << "page_no: " << i << ", offset: " << j << ", data: " << num<< endl;
             
         }
 
@@ -130,7 +130,7 @@ int main(int argc, const char *argv[])
 
     for(int i = 0; i < numbers.size(); i++){
         to_search = numbers.at(i);
-        cout<<"Searching for: "<<to_search<<endl;
+        //cout<<"Searching for: "<<to_search<<endl;
 
         low = first_page_no;
         high = last_page_no;
@@ -148,7 +148,7 @@ int main(int argc, const char *argv[])
             }
             catch (const InvalidPageException &e)
             {
-                cout << "file over" << endl;
+                //cout << "file over" << endl;
                 break;
             }
 
@@ -210,7 +210,7 @@ int main(int argc, const char *argv[])
                             offset++;
                         }
 
-                        cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                       // cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                     }
                 }
                 fh.UnpinPage(mid);
@@ -284,7 +284,7 @@ int main(int argc, const char *argv[])
                             offset++;
                         }
 
-                        cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                        //cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                     }
                 }
                 fh.UnpinPage(mid);
@@ -345,7 +345,7 @@ int main(int argc, const char *argv[])
                             memcpy(&odata[(offset)*4], &j, sizeof(int));
                             offset++;
                         }
-                        cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                        //cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                     }
                 }
 
@@ -364,7 +364,7 @@ int main(int argc, const char *argv[])
                     }
                     catch (const InvalidPageException &e)
                     {
-                        cout << "file over" << endl;
+                        //cout << "file over" << endl;
                         low = INT_MAX;
                         break;
                     }
@@ -420,7 +420,7 @@ int main(int argc, const char *argv[])
                                 memcpy(&odata[(offset)*4], &j, sizeof(int));
                                 offset++;
                             }
-                            cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                          //  cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                         }
                     }
 
@@ -494,7 +494,7 @@ int main(int argc, const char *argv[])
                             memcpy(&odata[(offset)*4], &j, sizeof(int));
                             offset++;
                         }
-                        cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                        //cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                     }
                 }
                 fh.UnpinPage(mid);
@@ -513,7 +513,7 @@ int main(int argc, const char *argv[])
                     }
                     catch (const InvalidPageException &e)
                     {
-                        cout << "file over" << endl;
+                       // cout << "file over" << endl;
                         low = INT_MAX;
                         break;
                     }
@@ -569,7 +569,7 @@ int main(int argc, const char *argv[])
                                 memcpy(&odata[(offset)*4], &j, sizeof(int));
                                 offset++;
                             }
-                            cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                            //cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                         }
                     }
 
@@ -638,7 +638,7 @@ int main(int argc, const char *argv[])
                             memcpy(&odata[(offset)*4], &j, sizeof(int));
                             offset++;
                         }
-                        cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                        //cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                     }
                 }
                 fh.UnpinPage(mid);
@@ -657,7 +657,7 @@ int main(int argc, const char *argv[])
                     }
                     catch (const InvalidPageException &e)
                     {
-                        cout << "file over" << endl;
+                        //cout << "file over" << endl;
                         low = INT_MAX;
                         break;
                     }
@@ -713,7 +713,7 @@ int main(int argc, const char *argv[])
                                 memcpy(&odata[(offset)*4], &j, sizeof(int));
                                 offset++;
                             }
-                            cout << "TO_FILE= PAGE: " << var << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                            //cout << "TO_FILE= PAGE: " << var << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                         }
                     }
 
@@ -743,7 +743,7 @@ int main(int argc, const char *argv[])
                     }
                     catch (const InvalidPageException &e)
                     {
-                        cout << "file over" << endl;
+                        //cout << "file over" << endl;
                         low = INT_MAX;
                         break;
                     }
@@ -799,7 +799,7 @@ int main(int argc, const char *argv[])
                                 memcpy(&odata[(offset)*4], &j, sizeof(int));
                                 offset++;
                             }
-                            cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                            //cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                         }
                     }
 
@@ -878,10 +878,10 @@ int main(int argc, const char *argv[])
     fm.CloseFile(fh);
     fm.CloseFile(outputfh);
 
-    // cout << "Output file" << endl;
-    // fh = fm.OpenFile(argv[3]);
-    // print(&fh, &fm);
-    // fm.DestroyFile(argv[3]);
+     //cout << "Output file" << endl;
+     //fh = fm.OpenFile(argv[3]);
+     //print(&fh, &fm);
+    //fm.DestroyFile(argv[3]);
 
     return 0;
     

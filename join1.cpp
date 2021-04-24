@@ -176,6 +176,6 @@ int main(int argc, const char* argv[]) {
     if(debug)cout<<"|***************end**********************|"<<endl;
 
 
-    fm.DestroyFile(argv[3]);
+    //fm.DestroyFile(argv[3]);
 }
 

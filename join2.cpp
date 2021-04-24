@@ -56,8 +56,8 @@ int main(int argc, const char* argv[]) {
     FileHandler fh_sorted = fm.OpenFile(argv[2]);
     //FileHandler check = fm.OpenFile("./TestCases/TC_join2/output_join2");
     //print(&check,&fm);
-	cout << "File opened" << endl;
-	cout<<BUFFER_SIZE<<" "<<PAGE_CONTENT_SIZE<<endl;
+	//cout << "File opened" << endl;
+	//cout<<BUFFER_SIZE<<" "<<PAGE_CONTENT_SIZE<<endl;
 	
 
 	
@@ -85,7 +85,7 @@ int main(int argc, const char* argv[]) {
         }
         catch(const InvalidPageException& e)
         {
-            cout<<"file over"<<endl;
+            //cout<<"file over"<<endl;
             break;
         }  
         data=ph.GetData();
@@ -108,7 +108,7 @@ int main(int argc, const char* argv[]) {
             catch(const InvalidPageException& e)
             {
                 q = -1;
-                cout<<"file over"<<endl;
+               // cout<<"file over"<<endl;
                 break;
             }  
             data2=ph2.GetData();
@@ -152,7 +152,7 @@ int main(int argc, const char* argv[]) {
                 }
                 catch(const InvalidPageException& e)
                 {
-                    cout<<"file over"<<endl;
+                    //cout<<"file over"<<endl;
                     break;
                 } 
                 data2 = ph2.GetData();
@@ -188,6 +188,6 @@ int main(int argc, const char* argv[]) {
         pagenum++;
         
     }
-    print(&outputfh,&fm);
-    fm.DestroyFile(argv[3]);
+    //print(&outputfh,&fm);
+    //fm.DestroyFile(argv[3]);
 }

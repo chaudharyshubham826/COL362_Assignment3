@@ -53,21 +53,21 @@ int main(int argc, const char* argv[]) {
 	ifstream inputFile;
 	inputFile.open(argv[2]);
 	if(!inputFile.is_open()){
-		cout<<"File doesn't exist";
+	   //	cout<<"File doesn't exist";
 	}
-	cout << "Input file for integers taken" << endl;
+	//cout << "Input file for integers taken" << endl;
 
 	//opening sorted_input
 	FileManager fm;
 	FileHandler fh = fm.OpenFile(argv[1]);
-	cout << "File opened" << endl;
-	cout<<BUFFER_SIZE<<" "<<PAGE_CONTENT_SIZE<<endl;
+	//cout << "File opened" << endl;
+	//cout<<BUFFER_SIZE<<" "<<PAGE_CONTENT_SIZE<<endl;
 	int  num;
 	string str;
 	vector<int> numbers;
 
 	while (inputFile >> str >> num) {
-		cout << "Read number " << num << endl;
+		//cout << "Read number " << num << endl;
 		numbers.push_back(num);
 	}
 	//sort(numbers.begin(), numbers.end());
@@ -75,9 +75,9 @@ int main(int argc, const char* argv[]) {
 
     int lastFoundPage = fh.FirstPage().GetPageNum();
     //fh.UnpinPage(lastFoundPage);
-	cout << "First page number is " << lastFoundPage << endl;
+	//cout << "First page number is " << lastFoundPage << endl;
     
-	cout<<"hello";
+	//cout<<"hello";
 	FileHandler outputfh;
 	outputfh=fm.CreateFile(argv[3]);
     PageHandler ph2 = outputfh.NewPage ();
@@ -101,7 +101,7 @@ int main(int argc, const char* argv[]) {
         }
         catch(const InvalidPageException& e)
         {
-            cout<<"file over"<<endl;
+          //  cout<<"file over"<<endl;
             break;
         }  
         data=ph.GetData();
@@ -186,7 +186,7 @@ int main(int argc, const char* argv[]) {
 
 
 
-	cout<<"Iteration "<<i<<"PagenumOutput: "<<opagenum<<"j is : "<<j<<endl;
+	//cout<<"Iteration "<<i<<"PagenumOutput: "<<opagenum<<"j is : "<<j<<endl;
 	if(j==PAGE_CONTENT_SIZE/8){
                         j=0;
                         outputfh.FlushPage(opagenum);
@@ -259,9 +259,9 @@ int main(int argc, const char* argv[]) {
 	fm.CloseFile (fh);
 	fm.CloseFile(outputfh);
 	
-	cout<<"Output file"<<endl;
-	fh = fm.OpenFile(argv[3]);
-	print(&fh, &fm);
-	fm.DestroyFile(argv[3]);
+	//cout<<"Output file"<<endl;
+	// fh = fm.OpenFile(argv[3]);
+	// print(&fh, &fm);
+	// fm.DestroyFile(argv[3]);
     
 }
