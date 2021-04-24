@@ -41,7 +41,6 @@ void print(FileHandler* fh, FileManager* fm){
         fh->UnpinPage(pagenum-1);
     }
 
-	//Flush the pages, close the file and destroy it
 	fh->FlushPages();
 
 }
@@ -117,29 +116,6 @@ int main(int argc, const char* argv[]) {
                     memcpy(&odata[j*4], &search,sizeof(int));
                     j+=1;
 
-                //     if(j<PAGE_CONTENT_SIZE/4){
-                //         memcpy (&odata[j*4], &num, sizeof(int));
-                //     }
-                //     else{
-                //         // outputfh.FlushPage(opagenum);
-                //         outputfh.UnpinPage(opagenum);
-                //         outputfh.FlushPages();
-                //         opagenum++;
-                //         ph3 = outputfh.NewPage ();
-                //         odata = ph3.GetData ();
-                //         j=-1;
-                //         }
-                //     j++;
-                //     if(j==PAGE_CONTENT_SIZE/4){
-				// 	j=0;
-				// 	// outputfh.FlushPage(opagenum);
-				// 	outputfh.UnpinPage(opagenum);
-				// 	outputfh.FlushPages();
-				// 	//fm.ClearBuffer();
-				// 	opagenum++;
-				// 	ph3 = outputfh.NewPage ();
-				// 	odata = ph3.GetData ();
-				// }
 
                     }
                     
@@ -163,7 +139,29 @@ int main(int argc, const char* argv[]) {
 	  memcpy (&odata[j*4], &end, sizeof(int));
 	  j++;
 	}
-    print(&outputfh,&fm);
+    outputfh.FlushPages();
+
+    int last_page_no = outputfh.LastPage().GetPageNum();
+    outputfh.UnpinPage(last_page_no);
+    outputfh.FlushPages();
+
+            if(last_page_no == 0){
+                int first;
+                ph = outputfh.PageAt(0);
+                data = ph.GetData();
+                memcpy(&first, &data[0], sizeof(int));
+
+                if(first == INT_MIN){
+                    outputfh.DisposePage(0);
+                }
+                else{
+                    outputfh.UnpinPage(0);
+                }
+
+                outputfh.FlushPages();
+
+    }
+    //print(&outputfh, &fm);
     fm.CloseFile(fh_unsorted1);
     fm.CloseFile(fh_unsorted2);
     fm.CloseFile(outputfh);
