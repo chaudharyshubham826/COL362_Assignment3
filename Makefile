@@ -5,6 +5,7 @@ join1objects= $(compiled) join1.o
 binaryobjects= $(compiled) binary_search.o
 deleteobjects= $(compiled) deletion.o
 join2objects= $(compiled) join2.o
+
 sample_run : $(sampleobjects)
 	     g++ -std=c++11 -o sample_run $(sampleobjects)
 
