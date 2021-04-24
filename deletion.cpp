@@ -176,6 +176,7 @@ int main(int argc, const char *argv[])
                 }
             }
         }
+        cout<<"Binary_searchDone"<<endl;
 
 
         ////////////////// STEP 2: FINDING LAST OCCURENCE USING LINEAR SEARCH AND STEP 3//////////////////////
@@ -225,9 +226,9 @@ int main(int argc, const char *argv[])
         if(found == true){
 
             
-            int var = 0;
+            // int var = 0;
 
-            int temp;
+            int temp = 0;
 
             while (q <= last_page_no){
                 // var++;
@@ -291,7 +292,7 @@ int main(int argc, const char *argv[])
             // cout<<"Done copying"<<endl;
 
             // Fill with int min's
-            int temp = 0;
+            // int temp = 0;
             int end = INT_MIN;
             fh.UnpinPage(ph.GetPageNum());
             ph = fh.PageAt(page);
@@ -313,7 +314,7 @@ int main(int argc, const char *argv[])
             // fh.FlushPage(q);
 
             //Delete last empty pages
-            cout<<"Page now: "<<page<<endl;
+            // cout<<"Page now: "<<page<<endl;
             if(temp != INT_MIN){
                 page++;
             }
