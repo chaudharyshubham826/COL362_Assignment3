@@ -41,7 +41,7 @@ void print(FileHandler *fh, FileManager *fm)
         fh->UnpinPage(pagenum - 1);
     }
 
-    //Flush the pages, close the file and destroy it
+    
     fh->FlushPages();
 }
 
@@ -62,7 +62,7 @@ int main(int argc, const char *argv[])
 
     while (inputFile >> str >> num)
     {
-        //cout << "Read number " << num << " from the input query_search.txt file" << endl;
+        
         numbers.push_back(num);
     }
     //////////////////////////////////All numbers to search in vector numbers now////////////////////////////
@@ -94,8 +94,7 @@ int main(int argc, const char *argv[])
         for (int j = 0; j < PAGE_CONTENT_SIZE / 4; j++)
         {
             memcpy(&num, &data[j * 4], sizeof(int));
-            // cout << "Page: " << pagenum << ", Data: " << num << endl;
-
+            
             
            // cout << "page_no: " << i << ", offset: " << j << ", data: " << num<< endl;
             
@@ -874,6 +873,7 @@ int main(int argc, const char *argv[])
         memcpy(&odata[offset * 4], &end, sizeof(int));
         offset++;
     }
+     
 
     fm.CloseFile(fh);
     fm.CloseFile(outputfh);
