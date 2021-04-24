@@ -13,7 +13,7 @@ linearsearch : $(linearobjects)
 join1: $(join1objects)
 	g++ -std=c++11 -o join1 $(join1objects)
 
-binary_search : $(binaryobjects)
+binarysearch : $(binaryobjects)
 	g++ -std=c++11 -o binarysearch $(binaryobjects)
 
 deletion : $(deleteobjects)
@@ -50,8 +50,8 @@ clean :
 	rm -f *.o
 	rm -f *.exe
 	rm -f deletion
-	rm -f binary_search
+	rm -f binarysearch
 	rm -f sample_run
-	rm -f linear_search
+	rm -f linearsearch
 	rm -f join1
 	rm -f join2

@@ -15,7 +15,7 @@ int main(int argc, const char *argv[])
     {
         cout << "File doesn't exist";
     }
-    cout << "Input file for integers taken" << endl;
+    // cout << "Input file for integers taken" << endl;
 
     int num;
     string str;
@@ -23,21 +23,21 @@ int main(int argc, const char *argv[])
 
     while (inputFile >> str >> num)
     {
-        cout << "Read number " << num << " from the input query_search.txt file" << endl;
+        // cout << "Read number " << num << " from the input query_search.txt file" << endl;
         numbers.push_back(num);
     }
 
     //opening sorted_input
     FileManager fm;
     FileHandler fh = fm.OpenFile(argv[1]);
-    cout << "File opened having data, sorted_input" << endl;
-    cout << BUFFER_SIZE << " " << PAGE_CONTENT_SIZE << endl;
+    // cout << "File opened having data, sorted_input" << endl;
+    // cout << BUFFER_SIZE << " " << PAGE_CONTENT_SIZE << endl;
 
     int first_page_no = fh.FirstPage().GetPageNum();
     int last_page_no = fh.LastPage().GetPageNum();
     //fh.UnpinPage(lastFoundPage);
-    cout << "First page number is " << first_page_no << endl;
-    cout << "Last page number is " << last_page_no << endl;
+    // cout << "First page number is " << first_page_no << endl;
+    // cout << "Last page number is " << last_page_no << endl;
 
     PageHandler ph;
     // int pagenum = 0;
@@ -45,23 +45,23 @@ int main(int argc, const char *argv[])
     PageHandler ph2;
     char *data2;
 
-    ////////////////////////////////
-    for (int i = first_page_no; i <= last_page_no; i++)
-    {
-        ph = fh.PageAt(i);
-        data = ph.GetData();
+    //////////// Uncomment of you want to print file contents ////////////////////
+    // for (int i = first_page_no; i <= last_page_no; i++)
+    // {
+    //     ph = fh.PageAt(i);
+    //     data = ph.GetData();
 
-        for (int j = 0; j < PAGE_CONTENT_SIZE / 4; j++)
-        {
-            memcpy(&num, &data[j * 4], sizeof(int));
-            // cout << "Page: " << pagenum << ", Data: " << num << endl;
+    //     for (int j = 0; j < PAGE_CONTENT_SIZE / 4; j++)
+    //     {
+    //         memcpy(&num, &data[j * 4], sizeof(int));
+    //         // cout << "Page: " << pagenum << ", Data: " << num << endl;
 
-            cout << "page_no: " << i << ", offset: " << j << ", data: " << num << endl;
-        }
+    //         cout << "page_no: " << i << ", offset: " << j << ", data: " << num << endl;
+    //     }
 
-        fh.UnpinPage(i);
-        fh.FlushPages();
-    }
+    //     fh.UnpinPage(i);
+    //     fh.FlushPages();
+    // }
 
     /////// global vars
     int to_search;
@@ -79,7 +79,7 @@ int main(int argc, const char *argv[])
     for(int test = 0; test < numbers.size(); test++){
         to_search = numbers.at(test);
 
-        cout << "Searching for first occurence of: " << to_search << endl;
+        // cout << "Searching for first occurence of: " << to_search << endl;
 
         low = first_page_no;
         high = last_page_no;
@@ -93,7 +93,7 @@ int main(int argc, const char *argv[])
 
             try {ph = fh.PageAt(mid);}
             catch (const InvalidPageException &e){
-                cout << "file over" << endl;
+                // cout << "file over" << endl;
                 break;
             }
 
@@ -112,7 +112,7 @@ int main(int argc, const char *argv[])
                     found = true;
                     page = mid;
                     page_off = j;
-                    cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                    // cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                     break;
                 }
             }
@@ -126,7 +126,7 @@ int main(int argc, const char *argv[])
                     mid--;
                     try {ph = fh.PageAt(mid);}
                     catch (const InvalidPageException &e){
-                        cout << "file over" << endl;
+                        // cout << "file over" << endl;
                         break;
                     }
 
@@ -144,7 +144,7 @@ int main(int argc, const char *argv[])
                             found = true;
                             page = mid;
                             page_off = j;
-                            cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
+                            // cout << "TO_FILE= PAGE: " << mid << ", OFFSET: " << j << ", DATA: " << num << " .................." << endl;
                             break;
                         }
                     }
@@ -214,12 +214,12 @@ int main(int argc, const char *argv[])
                 
             }
 
-            cout<<"Last occurence: "<<"Page: "<<q<<", Offset: "<<q_off<<endl;
+            // cout<<"Last occurence: "<<"Page: "<<q<<", Offset: "<<q_off<<endl;
 
         }
 
-
         ///////////// STEP 3: PDF ALGO ///////////////////
+        // fm.PrintBuffer();
 
 
         if(found == true){
@@ -230,31 +230,32 @@ int main(int argc, const char *argv[])
             int temp;
 
             while (q <= last_page_no){
-                var++;
-                cout<<"iter "<<var<<endl;
-                cout<<page<<q<<endl;
-                fm.PrintBuffer();
+                // var++;
+                // cout<<"iter "<<var<<endl;
+                // cout<<"Page: "<<page<<", Page_off: "<<page_off<<", q: "<<q<<", q_off: "<<q_off<<endl;
+                // fm.PrintBuffer();
+                
 
-                
-                
                 // memcpy(&data2[page_off * 4], &data2[q_off * 4], sizeof(int));
+                fh.UnpinPage(ph.GetPageNum());
 
                 ph = fh.PageAt(q);
                 data = ph.GetData();
-                temp = data[q_off*4];
+                memcpy(&temp, &data[q_off*4], sizeof(int));
+                // temp = data[q_off*4];
                 fh.UnpinPage(q);
+                // fh.FlushPage(q);
+               
 
                 ph = fh.PageAt(page);
-                fh.MarkDirty(page);
                 data = ph.GetData();
-                
-
                 memcpy(&data[page_off * 4], &temp, sizeof(int));
+                fh.MarkDirty(page);
 
                 fh.UnpinPage(page);
                 // fh.FlushPage(page);
 
-                cout<<"DONE"<<endl;
+                // cout<<"DONE"<<endl;
                 
 
                 
@@ -287,14 +288,15 @@ int main(int argc, const char *argv[])
                 
             }
 
-            cout<<"Done copying"<<endl;
-
-
+            // cout<<"Done copying"<<endl;
 
             // Fill with int min's
+            int temp = 0;
             int end = INT_MIN;
+            fh.UnpinPage(ph.GetPageNum());
             ph = fh.PageAt(page);
-            fh.MarkDirty(page);
+            // cout<<"Page at INT_MIN: "<<page<<endl;
+            
             data = ph.GetData();
             while (page_off < PAGE_CONTENT_SIZE / 4){
                 
@@ -302,17 +304,25 @@ int main(int argc, const char *argv[])
                 memcpy(&data[page_off * 4], &end, sizeof(int));
                 page_off++;
             }
+            memcpy(&temp, &data[0], sizeof(int));
+            fh.MarkDirty(page);
 
             fh.UnpinPage(page);
-            fh.FlushPage(page);
+            // fh.FlushPages();
             // fh.UnpinPage(q);
             // fh.FlushPage(q);
 
             //Delete last empty pages
-            page++;
+            cout<<"Page now: "<<page<<endl;
+            if(temp != INT_MIN){
+                page++;
+            }
+            
             while(page <= last_page_no){
+                
                 fh.DisposePage(page);
                 // fh.FlushPage(page);
+                fh.FlushPage(page);
                 
                 page++;
             }
